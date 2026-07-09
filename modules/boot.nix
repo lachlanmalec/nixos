@@ -12,6 +12,11 @@
     autoEnrollKeys.enable = true;
   };
 
+  local.persistence.systemDirectories = [
+    "/var/lib/sbctl"
+    "/var/lib/auto-cryptenroll" # lanzaboote secure boot key auto-enrollment
+  ];
+
   boot.kernelModules = [ "ntsync" ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
