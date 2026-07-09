@@ -107,6 +107,10 @@
             mode = "0700";
           }
 
+          # zed-editor (settings; extensions, language servers and workspace state)
+          ".config/zed"
+          ".local/share/zed"
+
           # xdg user directories
           "Desktop"
           "Documents"
