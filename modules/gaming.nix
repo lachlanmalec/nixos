@@ -14,4 +14,13 @@
       proton-ge-bin
     ];
   };
+
+  local.persistence.userDirectories = [
+    # steam (includes proton prefixes and compatibilitytools.d)
+    ".steam"
+    ".local/share/Steam"
+
+    # protonup-qt
+    ".config/pupgui"
+  ];
 }
