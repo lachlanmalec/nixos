@@ -122,9 +122,6 @@ in
           mode = "0700";
         }
 
-        # solaar (logitech device settings and rules)
-        ".config/solaar"
-
         # vesktop (settings and discord session)
         {
           directory = ".config/vesktop";
