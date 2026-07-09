@@ -84,6 +84,17 @@
             directory = ".config/claude";
             mode = "0700";
           }
+
+          # xdg user directories
+          "Desktop"
+          "Documents"
+          "Downloads"
+          "Music"
+          "Pictures"
+          "Projects"
+          "Public"
+          "Templates"
+          "Videos"
         ];
       };
     };
