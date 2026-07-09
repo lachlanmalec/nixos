@@ -32,4 +32,42 @@
       };
     }
   ];
+
+  local.persistence.userDirectories = [
+    # xdg user directories
+    "Desktop"
+    "Documents"
+    "Downloads"
+    "Music"
+    "Pictures"
+    "Projects"
+    "Public"
+    "Templates"
+    "Videos"
+
+    # gnome
+    ".config/autostart"
+    ".local/share/backgrounds"
+    ".local/share/gnome-shell"
+    {
+      directory = ".config/dconf";
+      mode = "0700";
+    }
+    {
+      directory = ".config/goa-1.0";
+      mode = "0700";
+    }
+    {
+      directory = ".config/evolution";
+      mode = "0700";
+    }
+    {
+      directory = ".local/share/evolution";
+      mode = "0700";
+    }
+    {
+      directory = ".local/share/keyrings";
+      mode = "0700";
+    }
+  ];
 }
