@@ -9,4 +9,12 @@
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     '';
   };
+
+  local.persistence.systemDirectories = [
+    "/var/lib/flatpak"
+  ];
+  local.persistence.userDirectories = [
+    ".local/share/flatpak"
+    ".var/app" # flatpak per-app user data
+  ];
 }

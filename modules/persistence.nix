@@ -115,16 +115,7 @@ in
     };
 
     local.persistence = {
-      systemDirectories = [
-        # flatpak
-        "/var/lib/flatpak"
-      ];
-
       userDirectories = [
-        # flatpack
-        ".local/share/flatpak"
-        ".var/app" # flatpak per-app user data
-
         # 1password
         {
           directory = ".config/1Password";
