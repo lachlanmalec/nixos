@@ -7,7 +7,7 @@
     ./modules/boot.nix
     ./modules/nix.nix
     ./modules/core.nix
-    ./modules/preservation.nix
+    ./modules/persistence.nix
     ./modules/locale.nix
     ./modules/network.nix
 
