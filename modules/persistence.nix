@@ -115,18 +115,7 @@ in
     };
 
     local.persistence = {
-      systemFiles = [
-        {
-          file = "/etc/machine-id";
-          inInitrd = true;
-        }
-      ];
-
       systemDirectories = [
-        "/var/lib/systemd/timers"
-        "/var/lib/nixos"
-        "/var/log"
-
         # flatpak
         "/var/lib/flatpak"
       ];
@@ -143,12 +132,6 @@ in
         }
         {
           directory = ".config/op";
-          mode = "0700";
-        }
-
-        # firefox
-        {
-          directory = ".config/mozilla";
           mode = "0700";
         }
 

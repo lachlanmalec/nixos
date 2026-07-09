@@ -17,4 +17,25 @@
   programs.firefox.enable = true;
 
   services.openssh.enable = true;
+
+  # base os state
+  local.persistence.systemFiles = [
+    {
+      file = "/etc/machine-id";
+      inInitrd = true;
+    }
+  ];
+  local.persistence.systemDirectories = [
+    "/var/lib/systemd/timers"
+    "/var/lib/nixos"
+    "/var/log"
+  ];
+
+  # firefox
+  local.persistence.userDirectories = [
+    {
+      directory = ".config/mozilla";
+      mode = "0700";
+    }
+  ];
 }
