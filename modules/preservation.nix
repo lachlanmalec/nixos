@@ -111,6 +111,12 @@
           ".config/zed"
           ".local/share/zed"
 
+          # obs-studio (scenes, profiles incl. stream keys, settings)
+          {
+            directory = ".config/obs-studio";
+            mode = "0700";
+          }
+
           # xdg user directories
           "Desktop"
           "Documents"
