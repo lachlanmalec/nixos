@@ -53,7 +53,17 @@
         # imperative connectivity
         "/var/lib/bluetooth"
         "/etc/NetworkManager/system-connections"
+
+        # flatpak
+        "/var/lib/flatpak"
       ];
+      users.lachlan = {
+        directories = [
+          # flatpack
+          ".local/share/flatpak"
+          ".var/app" # flatpak per-app user data
+        ];
+      };
     };
   };
 
