@@ -31,6 +31,10 @@
       package-version-server
     ];
 
+    home.sessionVariables = {
+      CLAUDE_CONFIG_DIR = "/home/lachlan/.config/claude";
+    };
+
     programs.bash.enable = true;
     programs.starship.enable = true;
     programs.eza.enable = true;

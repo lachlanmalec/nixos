@@ -78,6 +78,12 @@
             directory = ".config/mozilla";
             mode = "0700";
           }
+
+          # claude code
+          {
+            directory = ".config/claude";
+            mode = "0700";
+          }
         ];
       };
     };
