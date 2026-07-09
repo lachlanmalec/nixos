@@ -116,16 +116,6 @@ in
 
     local.persistence = {
       userDirectories = [
-        # 1password
-        {
-          directory = ".config/1Password";
-          mode = "0700";
-        }
-        {
-          directory = ".config/op";
-          mode = "0700";
-        }
-
         # claude code
         {
           directory = ".config/claude";
