@@ -138,12 +138,6 @@ in
         ".config/zed"
         ".local/share/zed"
 
-        # obs-studio (scenes, profiles incl. stream keys, settings)
-        {
-          directory = ".config/obs-studio";
-          mode = "0700";
-        }
-
         # google-chrome (profiles, logins, extensions; cache stays ephemeral)
         {
           directory = ".config/google-chrome";

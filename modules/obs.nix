@@ -20,4 +20,12 @@
       obs-vkcapture
     ];
   };
+
+  # obs-studio (scenes, profiles incl. stream keys, settings)
+  local.persistence.userDirectories = [
+    {
+      directory = ".config/obs-studio";
+      mode = "0700";
+    }
+  ];
 }
