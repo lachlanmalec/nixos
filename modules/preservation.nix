@@ -85,6 +85,13 @@
             mode = "0700";
           }
 
+          # steam (includes proton prefixes and compatibilitytools.d)
+          ".steam"
+          ".local/share/Steam"
+
+          # protonup-qt
+          ".config/pupgui"
+
           # xdg user directories
           "Desktop"
           "Documents"
