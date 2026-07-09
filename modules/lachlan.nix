@@ -14,6 +14,7 @@
     home.packages = with pkgs; [
       vesktop
       spotify
+      google-chrome
 
       # General Dev Tools
       zed-editor

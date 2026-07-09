@@ -117,6 +117,12 @@
             mode = "0700";
           }
 
+          # google-chrome (profiles, logins, extensions; cache stays ephemeral)
+          {
+            directory = ".config/google-chrome";
+            mode = "0700";
+          }
+
           # xdg user directories
           "Desktop"
           "Documents"
