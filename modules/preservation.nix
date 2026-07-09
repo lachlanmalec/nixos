@@ -50,6 +50,7 @@
         "/var/log"
         "/var/lib/sbctl"
         "/var/lib/auto-cryptenroll" # lanzaboote secure boot key auto-enrollment
+        "/etc/nixos"
 
         # imperative connectivity
         "/var/lib/bluetooth"
