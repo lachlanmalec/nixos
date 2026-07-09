@@ -6,4 +6,8 @@
     "nix-command"
     "flakes"
   ];
+
+  local.persistence.systemDirectories = [
+    "/etc/nixos"
+  ];
 }

@@ -126,7 +126,6 @@ in
         "/var/lib/systemd/timers"
         "/var/lib/nixos"
         "/var/log"
-        "/etc/nixos"
 
         # flatpak
         "/var/lib/flatpak"
