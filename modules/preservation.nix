@@ -37,7 +37,7 @@
 
   preservation = {
     enable = true;
-    preserveAt."/persistent" = {
+    preserveAt."/persist" = {
       files = [
         {
           file = "/etc/machine-id";
