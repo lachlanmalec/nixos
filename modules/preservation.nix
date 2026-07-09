@@ -101,6 +101,12 @@
             mode = "0700";
           }
 
+          # spotify (login and settings; cache stays ephemeral)
+          {
+            directory = ".config/spotify";
+            mode = "0700";
+          }
+
           # xdg user directories
           "Desktop"
           "Documents"
