@@ -62,6 +62,16 @@
           # flatpack
           ".local/share/flatpak"
           ".var/app" # flatpak per-app user data
+
+          # 1password
+          {
+            directory = ".config/1Password";
+            mode = "0700";
+          }
+          {
+            directory = ".config/op";
+            mode = "0700";
+          }
         ];
       };
     };
