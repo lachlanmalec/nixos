@@ -95,6 +95,12 @@
           # solaar (logitech device settings and rules)
           ".config/solaar"
 
+          # vesktop (settings and discord session)
+          {
+            directory = ".config/vesktop";
+            mode = "0700";
+          }
+
           # xdg user directories
           "Desktop"
           "Documents"
