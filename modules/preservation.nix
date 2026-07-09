@@ -92,6 +92,9 @@
           # protonup-qt
           ".config/pupgui"
 
+          # solaar (logitech device settings and rules)
+          ".config/solaar"
+
           # xdg user directories
           "Desktop"
           "Documents"
