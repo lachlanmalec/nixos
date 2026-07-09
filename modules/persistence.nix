@@ -128,10 +128,6 @@ in
         "/var/log"
         "/etc/nixos"
 
-        # imperative connectivity
-        "/var/lib/bluetooth"
-        "/etc/NetworkManager/system-connections"
-
         # flatpak
         "/var/lib/flatpak"
       ];
