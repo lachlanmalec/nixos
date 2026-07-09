@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   boot.initrd.systemd.enable = true;
@@ -95,7 +95,94 @@
           "Public"
           "Templates"
           "Videos"
+
+          # gnome
+          ".config/autostart"
+          ".local/share/backgrounds"
+          ".local/share/gnome-shell"
+          {
+            directory = ".config/dconf";
+            mode = "0700";
+          }
+          {
+            directory = ".config/goa-1.0";
+            mode = "0700";
+          }
+          {
+            directory = ".config/evolution";
+            mode = "0700";
+          }
+          {
+            directory = ".local/share/evolution";
+            mode = "0700";
+          }
+          {
+            directory = ".local/share/keyrings";
+            mode = "0700";
+          }
         ];
+      };
+    };
+  };
+
+  # GNOME rewrites these files atomically (write temp + rename), which breaks
+  # per-file bind mounts and symlinks. Instead, restore them from /persist at
+  # boot (before the session starts) and copy them back whenever GNOME
+  # rewrites them.
+  systemd.tmpfiles.settings.preservation-gnome-loose-files = {
+    # monitor layout configured in Display Settings
+    "/home/lachlan/.config/monitors.xml".C = {
+      user = "lachlan";
+      group = "users";
+      mode = "0644";
+      argument = "/persist/home/lachlan/.config/monitors.xml";
+    };
+    # default application (mime type) choices
+    "/home/lachlan/.config/mimeapps.list".C = {
+      user = "lachlan";
+      group = "users";
+      mode = "0644";
+      argument = "/persist/home/lachlan/.config/mimeapps.list";
+    };
+    # sidebar bookmarks in Files and GTK3/GTK4 file dialogs; the rest of
+    # gtk-3.0/gtk-4.0 is managed declaratively / defaults
+    "/home/lachlan/.config/gtk-3.0".d = {
+      user = "lachlan";
+      group = "users";
+      mode = "0755";
+    };
+    "/home/lachlan/.config/gtk-3.0/bookmarks".C = {
+      user = "lachlan";
+      group = "users";
+      mode = "0644";
+      argument = "/persist/home/lachlan/.config/gtk-3.0/bookmarks";
+    };
+  };
+
+  home-manager.users."lachlan" = {
+    systemd.user.paths.persist-gnome-loose-files = {
+      Unit.Description = "Watch GNOME loose config files for changes";
+      Path.PathChanged = [
+        "%h/.config/monitors.xml"
+        "%h/.config/mimeapps.list"
+        "%h/.config/gtk-3.0/bookmarks"
+      ];
+      Install.WantedBy = [ "default.target" ];
+    };
+    systemd.user.services.persist-gnome-loose-files = {
+      Unit.Description = "Copy GNOME loose config files to persistent storage";
+      Service = {
+        Type = "oneshot";
+        ExecStart = toString (
+          pkgs.writeShellScript "persist-gnome-loose-files" ''
+            for f in monitors.xml mimeapps.list gtk-3.0/bookmarks; do
+              if [ -f "$HOME/.config/$f" ]; then
+                mkdir -p "$(dirname "/persist/home/lachlan/.config/$f")"
+                cp -p "$HOME/.config/$f" "/persist/home/lachlan/.config/$f"
+              fi
+            done
+          ''
+        );
       };
     };
   };
