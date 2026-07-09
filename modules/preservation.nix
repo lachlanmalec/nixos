@@ -72,6 +72,12 @@
             directory = ".config/op";
             mode = "0700";
           }
+
+          # firefox
+          {
+            directory = ".config/mozilla";
+            mode = "0700";
+          }
         ];
       };
     };
