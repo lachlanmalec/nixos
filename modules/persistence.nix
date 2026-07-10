@@ -163,12 +163,6 @@ in
 
     local.persistence = {
       userDirectories = [
-        # vesktop (settings and discord session)
-        {
-          directory = ".config/vesktop";
-          mode = "0700";
-        }
-
         # spotify (login and settings; cache stays ephemeral)
         {
           directory = ".config/spotify";

@@ -14,10 +14,10 @@
     imports = [
       ./home/claude-code.nix
       ./home/zed-editor.nix
+      ./home/vesktop.nix
     ];
 
     home.packages = with pkgs; [
-      vesktop
       spotify
       google-chrome
 
