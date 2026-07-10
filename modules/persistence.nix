@@ -36,6 +36,10 @@ let
   # strict ancestor directories of a file path
   ancestorsOf = path: lib.filter (p: p != ".") (prefixesOf (dirOf path));
 
+  # multiple modules may declare the same synced file (e.g. mimeapps.list
+  # from several desktop environments)
+  syncedFiles = lib.unique cfg.userSyncedFiles;
+
   # directories that preservation already creates for a user (persisted dirs
   # and their intermediate parents); synced files must not duplicate these
   coveredFor = name: lib.unique (lib.concatMap prefixesOf (map entryKey (userDirsFor name)));
@@ -44,7 +48,7 @@ let
   syncedParentsFor =
     name:
     lib.filter (a: !(lib.elem a (coveredFor name))) (
-      lib.unique (lib.concatMap ancestorsOf cfg.userSyncedFiles)
+      lib.unique (lib.concatMap ancestorsOf syncedFiles)
     );
 in
 {
@@ -124,10 +128,10 @@ in
         };
       }
       {
-        config = lib.mkIf (cfg.userSyncedFiles != [ ]) {
+        config = lib.mkIf (syncedFiles != [ ]) {
           systemd.user.paths.local-persistence-synced-files = {
             Unit.Description = "Watch synced persistence files for changes";
-            Path.PathChanged = map (f: "%h/${f}") cfg.userSyncedFiles;
+            Path.PathChanged = map (f: "%h/${f}") syncedFiles;
             Install.WantedBy = [ "default.target" ];
           };
           systemd.user.services.local-persistence-synced-files = {
@@ -136,7 +140,7 @@ in
               Type = "oneshot";
               ExecStart = toString (
                 pkgs.writeShellScript "local-persistence-synced-files" ''
-                  for f in ${lib.escapeShellArgs cfg.userSyncedFiles}; do
+                  for f in ${lib.escapeShellArgs syncedFiles}; do
                     if [ -f "$HOME/$f" ]; then
                       mkdir -p "$(dirname "/persist$HOME/$f")"
                       cp -p "$HOME/$f" "/persist$HOME/$f"
@@ -167,7 +171,7 @@ in
     # at boot (before any session starts) and copy them back whenever they
     # change.
     systemd.tmpfiles.settings.local-persistence-synced-files =
-      lib.mkIf (cfg.userSyncedFiles != [ ]) (
+      lib.mkIf (syncedFiles != [ ]) (
         lib.mkMerge (
           lib.mapAttrsToList (
             name: user:
@@ -192,7 +196,7 @@ in
                     argument = "/persist${user.home}/${f}";
                   };
                 }
-              ) cfg.userSyncedFiles)
+              ) syncedFiles)
             )
           ) normalUsers
         )
