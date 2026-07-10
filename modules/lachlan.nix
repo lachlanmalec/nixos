@@ -15,10 +15,10 @@
       ./home/claude-code.nix
       ./home/zed-editor.nix
       ./home/vesktop.nix
+      ./home/spotify.nix
     ];
 
     home.packages = with pkgs; [
-      spotify
       google-chrome
 
       # General Dev Tools

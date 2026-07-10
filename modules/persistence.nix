@@ -163,12 +163,6 @@ in
 
     local.persistence = {
       userDirectories = [
-        # spotify (login and settings; cache stays ephemeral)
-        {
-          directory = ".config/spotify";
-          mode = "0700";
-        }
-
         # google-chrome (profiles, logins, extensions; cache stays ephemeral)
         {
           directory = ".config/google-chrome";
