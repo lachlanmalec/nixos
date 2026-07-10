@@ -13,6 +13,7 @@
   home-manager.users."lachlan" = {
     imports = [
       ./home/claude-code.nix
+      ./home/zed-editor.nix
     ];
 
     home.packages = with pkgs; [
@@ -21,7 +22,6 @@
       google-chrome
 
       # General Dev Tools
-      zed-editor
       git
       gh
       

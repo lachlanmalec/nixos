@@ -175,10 +175,6 @@ in
           mode = "0700";
         }
 
-        # zed-editor (settings; extensions, language servers and workspace state)
-        ".config/zed"
-        ".local/share/zed"
-
         # google-chrome (profiles, logins, extensions; cache stays ephemeral)
         {
           directory = ".config/google-chrome";
