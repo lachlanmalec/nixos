@@ -17,8 +17,6 @@
     "/var/lib/auto-cryptenroll" # lanzaboote secure boot key auto-enrollment
   ];
 
-  boot.kernelModules = [ "ntsync" ];
-
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;

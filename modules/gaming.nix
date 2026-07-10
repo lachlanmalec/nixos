@@ -7,6 +7,10 @@
   ];
   programs.gamemode.enable = true;
   programs.gamescope.enable = true;
+
+  # faster wine/proton synchronization primitives
+  boot.kernelModules = [ "ntsync" ];
+
   programs.steam = {
     remotePlay.openFirewall = true;
     enable = true;
