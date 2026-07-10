@@ -31,10 +31,15 @@
     "/var/log"
   ];
 
-  # firefox
   local.persistence.userDirectories = [
+    # firefox
     {
       directory = ".config/mozilla";
+      mode = "0700";
+    }
+    # nixos
+    {
+      directory = ".config/nixos";
       mode = "0700";
     }
   ];
