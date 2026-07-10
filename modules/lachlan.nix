@@ -23,11 +23,11 @@
       # General Dev Tools
       git
       gh
-      
+
       # C# Dev Tools
       dotnet-sdk_10
       csharp-ls
-            
+
       # Nix Development Tools
       nil
       nixd
@@ -49,6 +49,12 @@
     programs.tmux = {
       enable = true;
       mouse = true;
+    };
+
+    programs.git = {
+      enable = true;
+      userName = "Lachlan Malec";
+      userEmail = "lachlan@lachlanmalec.dev";
     };
 
     home.stateVersion = "26.05";
