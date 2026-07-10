@@ -163,12 +163,6 @@ in
 
     local.persistence = {
       userDirectories = [
-        # claude code
-        {
-          directory = ".config/claude";
-          mode = "0700";
-        }
-
         # vesktop (settings and discord session)
         {
           directory = ".config/vesktop";

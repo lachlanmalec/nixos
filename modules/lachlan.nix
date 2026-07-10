@@ -11,6 +11,10 @@
     ];
   };
   home-manager.users."lachlan" = {
+    imports = [
+      ./home/claude-code.nix
+    ];
+
     home.packages = with pkgs; [
       vesktop
       spotify
@@ -18,7 +22,6 @@
 
       # General Dev Tools
       zed-editor
-      claude-code
       git
       gh
       
@@ -31,10 +34,6 @@
       nixd
       package-version-server
     ];
-
-    home.sessionVariables = {
-      CLAUDE_CONFIG_DIR = "/home/lachlan/.config/claude";
-    };
 
     programs.bash.enable = true;
     programs.starship.enable = true;
