@@ -70,4 +70,16 @@
       mode = "0700";
     }
   ];
+
+  # these files are rewritten atomically by GNOME/GTK and cannot be
+  # bind-mounted; see the synced-files machinery in persistence.nix
+  local.persistence.userSyncedFiles = [
+    # monitor layout configured in Display Settings
+    ".config/monitors.xml"
+    # default application (mime type) choices
+    ".config/mimeapps.list"
+    # sidebar bookmarks in Files and GTK3/GTK4 file dialogs; the rest of
+    # gtk-3.0/gtk-4.0 is managed declaratively / defaults
+    ".config/gtk-3.0/bookmarks"
+  ];
 }

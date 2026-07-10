@@ -24,6 +24,28 @@ let
     dedupeBy entryKey (
       cfg.userDirectories ++ (config.home-manager.users.${name}.local.persistence.directories or [ ])
     );
+
+  # all cumulative path prefixes: ".config/gtk-3.0" -> [ ".config" ".config/gtk-3.0" ]
+  prefixesOf =
+    path:
+    let
+      parts = lib.splitString "/" path;
+    in
+    lib.foldl' (acc: part: acc ++ [ (if acc == [ ] then part else "${lib.last acc}/${part}") ]) [ ] parts;
+
+  # strict ancestor directories of a file path
+  ancestorsOf = path: lib.filter (p: p != ".") (prefixesOf (dirOf path));
+
+  # directories that preservation already creates for a user (persisted dirs
+  # and their intermediate parents); synced files must not duplicate these
+  coveredFor = name: lib.unique (lib.concatMap prefixesOf (map entryKey (userDirsFor name)));
+
+  # parent directories the synced-file rules must create themselves
+  syncedParentsFor =
+    name:
+    lib.filter (a: !(lib.elem a (coveredFor name))) (
+      lib.unique (lib.concatMap ancestorsOf cfg.userSyncedFiles)
+    );
 in
 {
   options.local.persistence = {
@@ -101,6 +123,31 @@ in
           description = "Home-relative directories persisted for this user.";
         };
       }
+      {
+        config = lib.mkIf (cfg.userSyncedFiles != [ ]) {
+          systemd.user.paths.local-persistence-synced-files = {
+            Unit.Description = "Watch synced persistence files for changes";
+            Path.PathChanged = map (f: "%h/${f}") cfg.userSyncedFiles;
+            Install.WantedBy = [ "default.target" ];
+          };
+          systemd.user.services.local-persistence-synced-files = {
+            Unit.Description = "Copy synced persistence files to persistent storage";
+            Service = {
+              Type = "oneshot";
+              ExecStart = toString (
+                pkgs.writeShellScript "local-persistence-synced-files" ''
+                  for f in ${lib.escapeShellArgs cfg.userSyncedFiles}; do
+                    if [ -f "$HOME/$f" ]; then
+                      mkdir -p "$(dirname "/persist$HOME/$f")"
+                      cp -p "$HOME/$f" "/persist$HOME/$f"
+                    fi
+                  done
+                ''
+              );
+            };
+          };
+        };
+      }
     ];
 
     preservation = {
@@ -146,67 +193,42 @@ in
       ];
     };
 
-    # GNOME rewrites these files atomically (write temp + rename), which breaks
-    # per-file bind mounts and symlinks. Instead, restore them from /persist at
-    # boot (before the session starts) and copy them back whenever GNOME
-    # rewrites them.
-    systemd.tmpfiles.settings.preservation-gnome-loose-files = {
-      # monitor layout configured in Display Settings
-      "/home/lachlan/.config/monitors.xml".C = {
-        user = "lachlan";
-        group = "users";
-        mode = "0644";
-        argument = "/persist/home/lachlan/.config/monitors.xml";
-      };
-      # default application (mime type) choices
-      "/home/lachlan/.config/mimeapps.list".C = {
-        user = "lachlan";
-        group = "users";
-        mode = "0644";
-        argument = "/persist/home/lachlan/.config/mimeapps.list";
-      };
-      # sidebar bookmarks in Files and GTK3/GTK4 file dialogs; the rest of
-      # gtk-3.0/gtk-4.0 is managed declaratively / defaults
-      "/home/lachlan/.config/gtk-3.0".d = {
-        user = "lachlan";
-        group = "users";
-        mode = "0755";
-      };
-      "/home/lachlan/.config/gtk-3.0/bookmarks".C = {
-        user = "lachlan";
-        group = "users";
-        mode = "0644";
-        argument = "/persist/home/lachlan/.config/gtk-3.0/bookmarks";
-      };
-    };
-
-    home-manager.users."lachlan" = {
-      systemd.user.paths.persist-gnome-loose-files = {
-        Unit.Description = "Watch GNOME loose config files for changes";
-        Path.PathChanged = [
-          "%h/.config/monitors.xml"
-          "%h/.config/mimeapps.list"
-          "%h/.config/gtk-3.0/bookmarks"
-        ];
-        Install.WantedBy = [ "default.target" ];
-      };
-      systemd.user.services.persist-gnome-loose-files = {
-        Unit.Description = "Copy GNOME loose config files to persistent storage";
-        Service = {
-          Type = "oneshot";
-          ExecStart = toString (
-            pkgs.writeShellScript "persist-gnome-loose-files" ''
-              for f in monitors.xml mimeapps.list gtk-3.0/bookmarks; do
-                if [ -f "$HOME/.config/$f" ]; then
-                  mkdir -p "$(dirname "/persist/home/lachlan/.config/$f")"
-                  cp -p "$HOME/.config/$f" "/persist/home/lachlan/.config/$f"
-                fi
-              done
-            ''
-          );
-        };
-      };
-    };
+    # Files listed in local.persistence.userSyncedFiles are rewritten
+    # atomically by their applications (write temp + rename), which breaks
+    # per-file bind mounts and symlinks. Instead, restore them from /persist
+    # at boot (before any session starts) and copy them back whenever they
+    # change.
+    systemd.tmpfiles.settings.local-persistence-synced-files =
+      lib.mkIf (cfg.userSyncedFiles != [ ]) (
+        lib.mkMerge (
+          lib.mapAttrsToList (
+            name: user:
+            builtins.listToAttrs (
+              (map (
+                p:
+                lib.nameValuePair "${user.home}/${p}" {
+                  d = {
+                    user = name;
+                    group = user.group;
+                    mode = "0755";
+                  };
+                }
+              ) (syncedParentsFor name))
+              ++ (map (
+                f:
+                lib.nameValuePair "${user.home}/${f}" {
+                  C = {
+                    user = name;
+                    group = user.group;
+                    mode = "0644";
+                    argument = "/persist${user.home}/${f}";
+                  };
+                }
+              ) cfg.userSyncedFiles)
+            )
+          ) normalUsers
+        )
+      );
 
     systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
   };
