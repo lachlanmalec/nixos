@@ -74,6 +74,11 @@
   # these files are rewritten atomically by GNOME/GTK and cannot be
   # bind-mounted; see the synced-files machinery in persistence.nix
   local.persistence.userSyncedFiles = [
+    # wallpaper image written by the "Set as Background" portal
+    # (xdg-desktop-portal-gnome writes it here via atomic rename); the
+    # picture-uri dconf key points at this path. Settings > Appearance
+    # instead stores images in the persisted ~/.local/share/backgrounds.
+    ".config/background"
     # monitor layout configured in Display Settings
     ".config/monitors.xml"
     # default application (mime type) choices
