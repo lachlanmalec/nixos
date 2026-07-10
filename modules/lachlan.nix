@@ -16,11 +16,10 @@
       ./home/zed-editor.nix
       ./home/vesktop.nix
       ./home/spotify.nix
+      ./home/google-chrome.nix
     ];
 
     home.packages = with pkgs; [
-      google-chrome
-
       # General Dev Tools
       git
       gh

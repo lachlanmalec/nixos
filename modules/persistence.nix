@@ -161,16 +161,6 @@ in
       };
     };
 
-    local.persistence = {
-      userDirectories = [
-        # google-chrome (profiles, logins, extensions; cache stays ephemeral)
-        {
-          directory = ".config/google-chrome";
-          mode = "0700";
-        }
-      ];
-    };
-
     # Files listed in local.persistence.userSyncedFiles are rewritten
     # atomically by their applications (write temp + rename), which breaks
     # per-file bind mounts and symlinks. Instead, restore them from /persist
