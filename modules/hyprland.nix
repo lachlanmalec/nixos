@@ -37,6 +37,12 @@
   # the login password.
   services.gnome.gnome-keyring.enable = true;
 
+  # backends for ashell's power indicators (org.freedesktop.UPower and its
+  # PowerProfiles). On this desktop the battery indicator stays empty, but
+  # these are harmless and drive the power-profile switcher.
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   # enable the Hyprland home-manager module for all home-manager users;
   # disable its systemd integration since UWSM manages the session
   home-manager.sharedModules = [
