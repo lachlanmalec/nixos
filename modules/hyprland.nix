@@ -126,6 +126,10 @@
                     passes = 1;
                   };
                 };
+                # disable all animations
+                animations = {
+                  enabled = false;
+                };
               };
 
               # keybindings
