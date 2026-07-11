@@ -17,7 +17,8 @@
 
     ./modules/home-manager.nix
 
-    ./modules/gnome.nix
+    # ./modules/gnome.nix
+    ./modules/hyprland.nix
     ./modules/gaming.nix
     ./modules/lachlan.nix
 
