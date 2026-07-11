@@ -255,6 +255,9 @@
           enable = true;
           systemd.enable = true;
           settings = {
+            # non-floating, full-width bar instead of the default floating
+            # "Islands" style
+            appearance.style = "Solid";
             modules = {
               left = [ "Workspaces" ];
               center = [ "WindowTitle" ];
