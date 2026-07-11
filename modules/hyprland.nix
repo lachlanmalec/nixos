@@ -207,6 +207,24 @@
                     (inline "hl.dsp.exit()")
                   ];
                 }
+
+                # mouse: hold mod + left-drag to move a window
+                {
+                  _args = [
+                    (inline ''mod .. " + mouse:272"'')
+                    (inline "hl.dsp.window.drag()")
+                    { mouse = true; }
+                  ];
+                }
+                # mouse: hold mod + right-drag to resize a window (from the
+                # grabbed edge/corner)
+                {
+                  _args = [
+                    (inline ''mod .. " + mouse:273"'')
+                    (inline "hl.dsp.window.resize()")
+                    { mouse = true; }
+                  ];
+                }
               ]
               ++ workspaceBinds;
             };
@@ -219,6 +237,30 @@
         # application launcher, run as a daemon in the graphical session and
         # toggled via the mod + D keybind above
         services.hyprlauncher.enable = true;
+
+        # status bar + notification daemon. ashell serves
+        # org.freedesktop.Notifications, but only when the Notifications module
+        # is in the layout, so it is included in the right group below.
+        programs.ashell = {
+          enable = true;
+          systemd.enable = true;
+          settings = {
+            modules = {
+              left = [ "Workspaces" ];
+              center = [ "WindowTitle" ];
+              right = [
+                "SystemInfo"
+                [
+                  "Notifications"
+                  "Tray"
+                  "Tempo"
+                  "Privacy"
+                  "Settings"
+                ]
+              ];
+            };
+          };
+        };
 
         # wallpaper daemon; use wallpaper.png from the repo root on every
         # monitor (empty monitor = all). The path is copied into the store.
