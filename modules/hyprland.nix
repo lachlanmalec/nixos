@@ -337,5 +337,14 @@
     # hyprland
     ".config/hypr"
     ".local/share/hyprland"
+    ".local/share/hyprlauncher" # launcher usage-frequency cache
+
+    # gnome-keyring secret store (Secret Service). Without this the login
+    # keyring and every stored secret (e.g. Chrome's Safe Storage key) are
+    # wiped on each boot.
+    {
+      directory = ".local/share/keyrings";
+      mode = "0700";
+    }
   ];
 }
