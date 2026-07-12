@@ -13,7 +13,6 @@
     };
     preservation = {
       url = "github:nix-community/preservation";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
       url = "github:nix-community/disko";
