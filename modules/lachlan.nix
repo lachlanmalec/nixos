@@ -53,8 +53,8 @@
 
     programs.git = {
       enable = true;
-      userName = "Lachlan Malec";
-      userEmail = "lachlan@lachlanmalec.dev";
+      settings.user.name = "Lachlan Malec";
+      settings.user.email = "lachlan@lachlanmalec.dev";
     };
 
     home.stateVersion = "26.05";
