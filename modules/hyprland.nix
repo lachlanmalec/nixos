@@ -112,12 +112,12 @@
               config = {
                 general = {
                   gaps_in = 5;
-                  gaps_out = 20;
+                  gaps_out = 15;
                   border_size = 2;
                   layout = "dwindle";
                 };
                 decoration = {
-                  rounding = 10;
+                  rounding = 0;
                   active_opacity = 1.0;
                   inactive_opacity = 1.0;
                   blur = {
