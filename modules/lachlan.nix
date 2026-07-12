@@ -17,6 +17,7 @@
       ./home/vesktop.nix
       ./home/spotify.nix
       ./home/google-chrome.nix
+      ./home/slack.nix
     ];
 
     home.packages = with pkgs; [
