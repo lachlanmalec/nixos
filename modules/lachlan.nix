@@ -13,6 +13,8 @@
   home-manager.users."lachlan" = {
     imports = [
       ./home/claude-code.nix
+      ./home/development-csharp.nix
+      ./home/development-nix.nix
       ./home/kitty.nix
       ./home/zed-editor.nix
       ./home/vesktop.nix
@@ -25,15 +27,6 @@
       # General Dev Tools
       git
       gh
-
-      # C# Dev Tools
-      dotnet-sdk_10
-      csharp-ls
-
-      # Nix Development Tools
-      nil
-      nixd
-      package-version-server
     ];
 
     programs.bash.enable = true;
