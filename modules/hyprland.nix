@@ -5,6 +5,12 @@
     # kitty is Hyprland's default terminal (referenced by the default keybinds)
     kitty
 
+    # hyprshot: screenshot helper wrapping grim + slurp + wl-clipboard, bound
+    # to Print below. The nixpkgs package wraps those runtime deps (and jq +
+    # libnotify), so no need to install them separately; screenshots are copied
+    # to the clipboard, saved under ~/Pictures, and confirmed via a notification.
+    hyprshot
+
     # theming packages installed system-wide (as GNOME would) so GTK/Qt
     # applications detect the Adwaita themes regardless of the launching user
     gnome-themes-extra # Adwaita / Adwaita-dark GTK theme
@@ -200,6 +206,31 @@
                   _args = [
                     (inline ''mod .. " + D"'')
                     (inline ''hl.dsp.exec_cmd("hyprlauncher --toggle")'')
+                  ];
+                }
+
+                # screenshots via hyprshot (copied to the clipboard and saved
+                # under ~/Pictures). --freeze freezes the screen while a region
+                # is selected; hyprshot pops a confirmation notification itself.
+                #   Print          : select a region
+                #   SHIFT + Print  : the focused monitor
+                #   mod + Print    : the active window
+                {
+                  _args = [
+                    (inline ''"Print"'')
+                    (inline ''hl.dsp.exec_cmd("hyprshot --freeze -m region")'')
+                  ];
+                }
+                {
+                  _args = [
+                    (inline ''"SHIFT + Print"'')
+                    (inline ''hl.dsp.exec_cmd("hyprshot -m output")'')
+                  ];
+                }
+                {
+                  _args = [
+                    (inline ''mod .. " + Print"'')
+                    (inline ''hl.dsp.exec_cmd("hyprshot -m window")'')
                   ];
                 }
 
