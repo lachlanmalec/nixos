@@ -13,6 +13,7 @@
   home-manager.users."lachlan" = {
     imports = [
       ./home/claude-code.nix
+      ./home/kitty.nix
       ./home/zed-editor.nix
       ./home/vesktop.nix
       ./home/spotify.nix
