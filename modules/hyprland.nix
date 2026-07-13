@@ -99,14 +99,65 @@
                 _var = "kitty";
               };
 
-              # default catch-all monitor (empty output matches every monitor):
-              # highest resolution and refresh rate, automatic position and scale
-              monitor = {
-                output = "";
-                mode = "highres";
-                position = "auto";
-                scale = "auto";
-              };
+              # monitors are matched by description (make + model + serial) so
+              # config follows the physical panel regardless of which port it is
+              # plugged into. The two VG27AQ1A panels are identical apart from
+              # their serial, so the serial is what disambiguates them.
+              #
+              # rendered as one hl.monitor(...) call per list entry; the trailing
+              # empty-output entry is a catch-all fallback for any unknown monitor.
+              monitor = [
+                # ASUS PG27UCDM — 4K 240Hz, primary, center
+                {
+                  output = "desc:ASUSTek COMPUTER INC PG27UCDM T2LMAS010687";
+                  mode = "3840x2160@239.99";
+                  position = "0x0";
+                  scale = 1.5;
+                  bitdepth = 10;
+                  cm = "hdr";
+                  sdr_eotf = "default";
+                  sdr_max_luminance = 250;
+                  sdrbrightness = 1.0;
+                  sdrsaturation = 1.0;
+                  vrr = 3;
+                }
+                # ASUS VG27AQ1A — 1440p 144Hz, left
+                {
+                  output = "desc:ASUSTek COMPUTER INC VG27AQ1A S9LMQS149678";
+                  mode = "2560x1440@144.01";
+                  position = "auto-left";
+                  scale = 1.0;
+                  bitdepth = 10;
+                  cm = "hdr";
+                  sdr_eotf = "default";
+                  sdr_max_luminance = 200;
+                  sdrbrightness = 1.0;
+                  sdrsaturation = 1.0;
+                  vrr = 3;
+                }
+                # ASUS VG27AQ1A — 1440p 144Hz, right
+                {
+                  output = "desc:ASUSTek COMPUTER INC VG27AQ1A S9LMQS149140";
+                  mode = "2560x1440@144.01";
+                  position = "auto-right";
+                  scale = 1.0;
+                  bitdepth = 10;
+                  cm = "hdr";
+                  sdr_eotf = "default";
+                  sdr_max_luminance = 200;
+                  sdrbrightness = 1.0;
+                  sdrsaturation = 1.0;
+                  vrr = 3;
+                }
+                # fallback catch-all (empty output matches every other monitor):
+                # highest resolution and refresh rate, automatic position and scale
+                {
+                  output = "";
+                  mode = "highres";
+                  position = "auto";
+                  scale = "auto";
+                }
+              ];
 
               # styling: gaps + appearance
               config = {
