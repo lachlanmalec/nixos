@@ -165,6 +165,8 @@
                   gaps_in = 5;
                   gaps_out = 15;
                   border_size = 2;
+                  # GNOME default blue accent (libadwaita accent_bg_color)
+                  "col.active_border" = "rgb(3584e4)";
                   layout = "dwindle";
                 };
                 decoration = {
@@ -306,9 +308,18 @@
           enable = true;
           systemd.enable = true;
           settings = {
-            # non-floating, full-width bar instead of the default floating
-            # "Islands" style
-            appearance.style = "Solid";
+            appearance = {
+              # non-floating, full-width bar instead of the default floating
+              # "Islands" style
+              style = "Solid";
+              # match the Adwaita-dark window background (libadwaita
+              # window_bg_color) used across the GTK/Qt session
+              background_color = "#242424";
+              # Adwaita-dark foreground (window_fg_color)
+              text_color = "#ffffff";
+              # GNOME default blue accent (libadwaita accent_bg_color)
+              primary_color = "#3584e4";
+            };
             modules = {
               left = [ "Workspaces" ];
               center = [ "WindowTitle" ];
