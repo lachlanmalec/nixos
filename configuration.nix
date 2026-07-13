@@ -14,6 +14,7 @@
     ./modules/network.nix
 
     ./modules/hardware/audio.nix
+    ./modules/hardware/bluetooth.nix
     ./modules/hardware/nvidia.nix
     ./modules/hardware/logitech.nix
 
