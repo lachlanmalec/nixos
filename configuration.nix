@@ -13,9 +13,9 @@
     ./modules/locale.nix
     ./modules/network.nix
 
-    ./modules/audio.nix
-    ./modules/nvidia.nix
-    ./modules/logitech.nix
+    ./modules/hardware/audio.nix
+    ./modules/hardware/nvidia.nix
+    ./modules/hardware/logitech.nix
 
     ./modules/home-manager.nix
 
