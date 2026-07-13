@@ -9,13 +9,6 @@
     git
   ];
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  programs.firefox.enable = true;
-
   services.openssh.enable = true;
 
   # base os state
@@ -32,11 +25,6 @@
   ];
 
   local.persistence.userDirectories = [
-    # firefox
-    {
-      directory = ".config/mozilla";
-      mode = "0700";
-    }
     # nixos
     {
       directory = ".config/nixos";

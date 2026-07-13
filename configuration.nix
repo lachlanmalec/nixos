@@ -7,6 +7,8 @@
     ./modules/boot.nix
     ./modules/nix.nix
     ./modules/core.nix
+    ./modules/firefox.nix
+    ./modules/gpg.nix
     ./modules/persistence.nix
     ./modules/locale.nix
     ./modules/network.nix
