@@ -13,6 +13,7 @@
   home-manager.users."lachlan" = {
     imports = [
       ./home/claude-code.nix
+      ./home/helix.nix
       ./home/development-csharp.nix
       ./home/development-nix.nix
       ./home/kitty.nix
@@ -32,14 +33,6 @@
     programs.bash.enable = true;
     programs.starship.enable = true;
     programs.eza.enable = true;
-
-    programs.helix = {
-      enable = true;
-      defaultEditor = true;
-      settings = {
-        theme = "github_dark";
-      };
-    };
 
     programs.tmux = {
       enable = true;
