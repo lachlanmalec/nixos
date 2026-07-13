@@ -30,7 +30,7 @@
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.preservation.nixosModules.default
           inputs.disko.nixosModules.disko
-          ./configuration.nix
+          ./hosts/asuka/configuration.nix
         ];
       };
     };

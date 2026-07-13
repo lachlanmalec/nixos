@@ -1,7 +1,6 @@
 { ... }:
 
 {
-  networking.hostName = "asuka";
   networking.networkmanager.enable = true;
 
   # imperative connectivity

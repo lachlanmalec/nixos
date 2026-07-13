@@ -12,16 +12,16 @@
   };
   home-manager.users."lachlan" = {
     imports = [
-      ./home/claude-code.nix
-      ./home/helix.nix
-      ./home/development-csharp.nix
-      ./home/development-nix.nix
-      ./home/kitty.nix
-      ./home/zed-editor.nix
-      ./home/vesktop.nix
-      ./home/spotify.nix
-      ./home/google-chrome.nix
-      ./home/slack.nix
+      ../../../modules/home/claude-code.nix
+      ../../../modules/home/helix.nix
+      ../../../modules/home/development-csharp.nix
+      ../../../modules/home/development-nix.nix
+      ../../../modules/home/kitty.nix
+      ../../../modules/home/zed-editor.nix
+      ../../../modules/home/vesktop.nix
+      ../../../modules/home/spotify.nix
+      ../../../modules/home/google-chrome.nix
+      ../../../modules/home/slack.nix
     ];
 
     home.packages = with pkgs; [
