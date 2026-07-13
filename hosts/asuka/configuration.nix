@@ -13,7 +13,7 @@
     ../../modules/firefox.nix
     ../../modules/gpg.nix
     ../../modules/persistence.nix
-    ../../modules/network.nix
+    ../../modules/network-manager.nix
 
     ../../modules/hardware/audio.nix
     ../../modules/hardware/bluetooth.nix
