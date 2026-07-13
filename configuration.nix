@@ -12,7 +12,7 @@
     ./modules/network.nix
 
     ./modules/audio.nix
-    ./modules/graphics.nix
+    ./modules/nvidia.nix
     ./modules/logitech.nix
 
     ./modules/home-manager.nix
