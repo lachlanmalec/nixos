@@ -18,6 +18,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -31,6 +35,16 @@
           inputs.preservation.nixosModules.default
           inputs.disko.nixosModules.disko
           ./hosts/asuka/configuration.nix
+        ];
+      };
+
+      nixosConfigurations.kaworu = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.home-manager.nixosModules.default
+          inputs.preservation.nixosModules.default
+          inputs.nixos-wsl.nixosModules.default
+          ./hosts/kaworu/configuration.nix
         ];
       };
     };
