@@ -53,6 +53,8 @@ let
 in
 {
   options.local.persistence = {
+    enable = lib.mkEnableOption "ephemeral btrfs root with selective persistence to /persist";
+
     systemDirectories = lib.mkOption {
       type = lib.types.listOf entryType;
       default = [ ];
@@ -82,126 +84,134 @@ in
     };
   };
 
-  config = {
-    boot.initrd.systemd.enable = true;
-
-    fileSystems."/persist".neededForBoot = true;
-
-    boot.initrd.systemd.services.rollback = {
-      description = "Rollback btrfs root subvolume to a clean state";
-      wantedBy = [ "initrd.target" ];
-      after = [ "initrd-root-device.target" ];
-      before = [ "sysroot.mount" ];
-      unitConfig.DefaultDependencies = "no";
-      serviceConfig.Type = "oneshot";
-      script = ''
-        mkdir -p /mnt
-        mount -o subvol=/ /dev/disk/by-partlabel/disk-main-root /mnt
-        if [[ -e /mnt/root ]]; then
-          mkdir -p /mnt/old_roots
-          timestamp=$(date --date="@$(stat -c %Y /mnt/root)" "+%Y-%m-%-d_%H:%M:%S")
-          mv /mnt/root "/mnt/old_roots/$timestamp"
-        fi
-        delete_subvolume_recursively() {
-          IFS=$'\n'
-          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-            delete_subvolume_recursively "/mnt/$i"
-          done
-          btrfs subvolume delete "$1"
-        }
-        for i in $(find /mnt/old_roots/ -maxdepth 1 -mtime +30 2>/dev/null); do
-          delete_subvolume_recursively "$i"
-        done
-        btrfs subvolume create /mnt/root
-        umount /mnt
-      '';
-    };
-
-    # per-user persistence option, declared for every home-manager user;
-    # collected into preservation below
-    home-manager.sharedModules = [
-      {
-        options.local.persistence.directories = lib.mkOption {
-          type = lib.types.listOf entryType;
-          default = [ ];
-          description = "Home-relative directories persisted for this user.";
-        };
-      }
-      {
-        config = lib.mkIf (syncedFiles != [ ]) {
-          systemd.user.paths.local-persistence-synced-files = {
-            Unit.Description = "Watch synced persistence files for changes";
-            Path.PathChanged = map (f: "%h/${f}") syncedFiles;
-            Install.WantedBy = [ "default.target" ];
+  config = lib.mkMerge [
+    {
+      # local.persistence.* option declarations (above) and this per-user
+      # home-manager option must exist on every host, because shared modules
+      # set them unconditionally; only the implementation below is gated.
+      home-manager.sharedModules = [
+        {
+          options.local.persistence.directories = lib.mkOption {
+            type = lib.types.listOf entryType;
+            default = [ ];
+            description = "Home-relative directories persisted for this user.";
           };
-          systemd.user.services.local-persistence-synced-files = {
-            Unit.Description = "Copy synced persistence files to persistent storage";
-            Service = {
-              Type = "oneshot";
-              ExecStart = toString (
-                pkgs.writeShellScript "local-persistence-synced-files" ''
-                  for f in ${lib.escapeShellArgs syncedFiles}; do
-                    if [ -f "$HOME/$f" ]; then
-                      mkdir -p "$(dirname "/persist$HOME/$f")"
-                      cp -p "$HOME/$f" "/persist$HOME/$f"
-                    fi
-                  done
-                ''
-              );
+        }
+      ];
+    }
+
+    (lib.mkIf cfg.enable {
+      boot.initrd.systemd.enable = true;
+
+      fileSystems."/persist".neededForBoot = true;
+
+      boot.initrd.systemd.services.rollback = {
+        description = "Rollback btrfs root subvolume to a clean state";
+        wantedBy = [ "initrd.target" ];
+        after = [ "initrd-root-device.target" ];
+        before = [ "sysroot.mount" ];
+        unitConfig.DefaultDependencies = "no";
+        serviceConfig.Type = "oneshot";
+        script = ''
+          mkdir -p /mnt
+          mount -o subvol=/ /dev/disk/by-partlabel/disk-main-root /mnt
+          if [[ -e /mnt/root ]]; then
+            mkdir -p /mnt/old_roots
+            timestamp=$(date --date="@$(stat -c %Y /mnt/root)" "+%Y-%m-%-d_%H:%M:%S")
+            mv /mnt/root "/mnt/old_roots/$timestamp"
+          fi
+          delete_subvolume_recursively() {
+            IFS=$'\n'
+            for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+              delete_subvolume_recursively "/mnt/$i"
+            done
+            btrfs subvolume delete "$1"
+          }
+          for i in $(find /mnt/old_roots/ -maxdepth 1 -mtime +30 2>/dev/null); do
+            delete_subvolume_recursively "$i"
+          done
+          btrfs subvolume create /mnt/root
+          umount /mnt
+        '';
+      };
+
+      home-manager.sharedModules = [
+        {
+          config = lib.mkIf (syncedFiles != [ ]) {
+            systemd.user.paths.local-persistence-synced-files = {
+              Unit.Description = "Watch synced persistence files for changes";
+              Path.PathChanged = map (f: "%h/${f}") syncedFiles;
+              Install.WantedBy = [ "default.target" ];
+            };
+            systemd.user.services.local-persistence-synced-files = {
+              Unit.Description = "Copy synced persistence files to persistent storage";
+              Service = {
+                Type = "oneshot";
+                ExecStart = toString (
+                  pkgs.writeShellScript "local-persistence-synced-files" ''
+                    for f in ${lib.escapeShellArgs syncedFiles}; do
+                      if [ -f "$HOME/$f" ]; then
+                        mkdir -p "$(dirname "/persist$HOME/$f")"
+                        cp -p "$HOME/$f" "/persist$HOME/$f"
+                      fi
+                    done
+                  ''
+                );
+              };
             };
           };
+        }
+      ];
+
+      preservation = {
+        enable = true;
+        preserveAt."/persist" = {
+          files = cfg.systemFiles;
+          directories = dedupeBy entryKey cfg.systemDirectories;
+          users = lib.mapAttrs (name: _: {
+            directories = userDirsFor name;
+          }) normalUsers;
         };
-      }
-    ];
-
-    preservation = {
-      enable = true;
-      preserveAt."/persist" = {
-        files = cfg.systemFiles;
-        directories = dedupeBy entryKey cfg.systemDirectories;
-        users = lib.mapAttrs (name: _: {
-          directories = userDirsFor name;
-        }) normalUsers;
       };
-    };
 
-    # Files listed in local.persistence.userSyncedFiles are rewritten
-    # atomically by their applications (write temp + rename), which breaks
-    # per-file bind mounts and symlinks. Instead, restore them from /persist
-    # at boot (before any session starts) and copy them back whenever they
-    # change.
-    systemd.tmpfiles.settings.local-persistence-synced-files =
-      lib.mkIf (syncedFiles != [ ]) (
-        lib.mkMerge (
-          lib.mapAttrsToList (
-            name: user:
-            builtins.listToAttrs (
-              (map (
-                p:
-                lib.nameValuePair "${user.home}/${p}" {
-                  d = {
-                    user = name;
-                    group = user.group;
-                    mode = "0755";
-                  };
-                }
-              ) (syncedParentsFor name))
-              ++ (map (
-                f:
-                lib.nameValuePair "${user.home}/${f}" {
-                  C = {
-                    user = name;
-                    group = user.group;
-                    mode = "0644";
-                    argument = "/persist${user.home}/${f}";
-                  };
-                }
-              ) syncedFiles)
-            )
-          ) normalUsers
-        )
-      );
+      # Files listed in local.persistence.userSyncedFiles are rewritten
+      # atomically by their applications (write temp + rename), which breaks
+      # per-file bind mounts and symlinks. Instead, restore them from /persist
+      # at boot (before any session starts) and copy them back whenever they
+      # change.
+      systemd.tmpfiles.settings.local-persistence-synced-files =
+        lib.mkIf (syncedFiles != [ ]) (
+          lib.mkMerge (
+            lib.mapAttrsToList (
+              name: user:
+              builtins.listToAttrs (
+                (map (
+                  p:
+                  lib.nameValuePair "${user.home}/${p}" {
+                    d = {
+                      user = name;
+                      group = user.group;
+                      mode = "0755";
+                    };
+                  }
+                ) (syncedParentsFor name))
+                ++ (map (
+                  f:
+                  lib.nameValuePair "${user.home}/${f}" {
+                    C = {
+                      user = name;
+                      group = user.group;
+                      mode = "0644";
+                      argument = "/persist${user.home}/${f}";
+                    };
+                  }
+                ) syncedFiles)
+              )
+            ) normalUsers
+          )
+        );
 
-    systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
-  };
+      systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+    })
+  ];
 }
