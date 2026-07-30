@@ -22,6 +22,7 @@
       ../../../modules/home/spotify.nix
       ../../../modules/home/google-chrome.nix
       ../../../modules/home/slack.nix
+      ../../../modules/home/tmux.nix
     ];
 
     home.packages = with pkgs; [
@@ -33,11 +34,6 @@
     programs.bash.enable = true;
     programs.starship.enable = true;
     programs.eza.enable = true;
-
-    programs.tmux = {
-      enable = true;
-      mouse = true;
-    };
 
     programs.git = {
       enable = true;

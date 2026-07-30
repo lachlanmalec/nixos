@@ -15,6 +15,7 @@
       ../../../modules/home/helix.nix
       ../../../modules/home/development-csharp.nix
       ../../../modules/home/development-nix.nix
+      ../../../modules/home/tmux.nix
     ];
 
     home.packages = with pkgs; [
@@ -26,11 +27,6 @@
     programs.bash.enable = true;
     programs.starship.enable = true;
     programs.eza.enable = true;
-
-    programs.tmux = {
-      enable = true;
-      mouse = true;
-    };
 
     programs.git = {
       enable = true;
