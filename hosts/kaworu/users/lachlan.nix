@@ -17,6 +17,7 @@
       ../../../modules/home/development-nix.nix
       ../../../modules/home/shell.nix
       ../../../modules/home/tmux.nix
+      ../../../modules/home/zellij.nix
     ];
 
     home.packages = with pkgs; [
