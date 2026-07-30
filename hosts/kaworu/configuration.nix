@@ -3,11 +3,11 @@
 {
   imports = [
     ./wsl.nix
-    ./locale.nix
     ./users/lachlan.nix
 
     ../../modules/nix.nix
     ../../modules/core.nix
+    ../../modules/locales/australia-brisbane.nix
     ../../modules/gpg.nix
     # imported for its local.persistence.* option declarations only; the
     # impermanence implementation stays disabled — WSL mounts the rootfs

@@ -4,12 +4,12 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ./locale.nix
     ./users/lachlan.nix
 
     ../../modules/boot.nix
     ../../modules/nix.nix
     ../../modules/core.nix
+    ../../modules/locales/australia-brisbane.nix
     ../../modules/persistence.nix
     ../../modules/ssh.nix
 
