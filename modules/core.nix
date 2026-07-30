@@ -9,8 +9,6 @@
     git
   ];
 
-  services.openssh.enable = true;
-
   # base os state
   local.persistence.systemFiles = [
     {

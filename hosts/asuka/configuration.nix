@@ -13,6 +13,7 @@
     ../../modules/firefox.nix
     ../../modules/gpg.nix
     ../../modules/persistence.nix
+    ../../modules/ssh.nix
     ../../modules/network-manager.nix
 
     ../../modules/hardware/audio.nix

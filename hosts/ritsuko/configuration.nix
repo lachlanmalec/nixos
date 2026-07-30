@@ -11,6 +11,7 @@
     ../../modules/nix.nix
     ../../modules/core.nix
     ../../modules/persistence.nix
+    ../../modules/ssh.nix
 
     ../../modules/home-manager.nix
   ];
@@ -19,11 +20,6 @@
   networking.useNetworkd = true;
 
   local.persistence.enable = true;
-  # headless host administered only over SSH: keep host keys stable across
-  # root-subvolume rollbacks so clients don't see host-key-changed warnings
-  local.persistence.systemDirectories = [
-    "/etc/ssh"
-  ];
 
   system.stateVersion = "26.05";
 }
