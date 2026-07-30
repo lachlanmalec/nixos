@@ -15,6 +15,7 @@
       ../../../modules/home/helix.nix
       ../../../modules/home/development-csharp.nix
       ../../../modules/home/development-nix.nix
+      ../../../modules/home/shell.nix
       ../../../modules/home/tmux.nix
     ];
 
@@ -23,10 +24,6 @@
       git
       gh
     ];
-
-    programs.bash.enable = true;
-    programs.starship.enable = true;
-    programs.eza.enable = true;
 
     programs.git = {
       enable = true;
