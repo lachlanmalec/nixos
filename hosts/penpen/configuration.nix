@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -32,6 +33,13 @@
   local.persistence.enable = true;
   local.persistence.mode = "tmpfs-root";
 
+  # a roaming rescue stick joins untrusted networks: key-only SSH
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.KbdInteractiveAuthentication = false;
+
+  # /var/db/sudo is on the tmpfs root; don't re-lecture every boot
+  security.sudo.extraConfig = "Defaults lecture = never";
+
   # deploy tooling for reinstalling other hosts from the stick
   environment.systemPackages = [
     inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
@@ -49,7 +57,7 @@
           args:
           prev.vmTools.override (
             args
-            // {
+            // lib.optionalAttrs (args ? kernel) {
               kernel = config.boot.kernelPackages.kernel;
               kernelModules = args.kernel;
             }

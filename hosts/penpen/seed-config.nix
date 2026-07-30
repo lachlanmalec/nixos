@@ -9,18 +9,17 @@
     description = "Seed ~/.config/nixos with the flake this image was built from";
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-tmpfiles-setup.service" ];
-    unitConfig = {
-      ConditionPathExists = "!/home/lachlan/.config/nixos/flake.nix";
-      # skip seeding if the preservation bind mount failed, rather than
-      # copying the flake into the tmpfs root where it evaporates on reboot
-      RequiresMountsFor = "/home/lachlan/.config/nixos";
-    };
+    # write to the /persist SOURCE, not the bind-mount target: on the first
+    # boot of a freshly imaged stick the preservation mounts fail (their
+    # sources don't exist yet), so seeding the source both works on boot 1
+    # and is exposed by the bind mount from boot 2 onward
+    unitConfig.ConditionPathExists = "!/persist/home/lachlan/.config/nixos/flake.nix";
     serviceConfig.Type = "oneshot";
     script = ''
-      mkdir -p /home/lachlan/.config/nixos
-      cp -rT ${inputs.self} /home/lachlan/.config/nixos
-      chmod -R u+w /home/lachlan/.config/nixos
-      chown -R lachlan:users /home/lachlan/.config/nixos
+      mkdir -p /persist/home/lachlan/.config/nixos
+      cp -rT ${inputs.self} /persist/home/lachlan/.config/nixos
+      chmod -R u+w /persist/home/lachlan/.config/nixos
+      chown -R lachlan:users /persist/home/lachlan
     '';
   };
 }

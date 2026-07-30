@@ -53,7 +53,7 @@ let
 in
 {
   options.local.persistence = {
-    enable = lib.mkEnableOption "ephemeral btrfs root with selective persistence to /persist";
+    enable = lib.mkEnableOption "ephemeral root with selective persistence to /persist";
 
     mode = lib.mkOption {
       type = lib.types.enum [
@@ -115,6 +115,17 @@ in
     }
 
     (lib.mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.mode != "btrfs-rollback" || config.fileSystems."/".fsType == "btrfs";
+          message = ''local.persistence.mode = "btrfs-rollback" requires a btrfs root filesystem (the rollback service mounts /dev/disk/by-partlabel/disk-main-root).'';
+        }
+        {
+          assertion = cfg.mode != "tmpfs-root" || config.fileSystems."/".fsType == "tmpfs";
+          message = ''local.persistence.mode = "tmpfs-root" requires the root filesystem to be a tmpfs (e.g. via disko nodev).'';
+        }
+      ];
+
       boot.initrd.systemd.enable = true;
 
       fileSystems."/persist".neededForBoot = true;
