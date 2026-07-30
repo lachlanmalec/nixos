@@ -55,6 +55,20 @@ in
   options.local.persistence = {
     enable = lib.mkEnableOption "ephemeral btrfs root with selective persistence to /persist";
 
+    mode = lib.mkOption {
+      type = lib.types.enum [
+        "btrfs-rollback"
+        "tmpfs-root"
+      ];
+      default = "btrfs-rollback";
+      description = ''
+        How the ephemeral root is achieved. "btrfs-rollback" rolls the root
+        subvolume back to a blank state in initrd. "tmpfs-root" expects the
+        host to declare a tmpfs root filesystem (e.g. via disko nodev) and
+        needs no rollback machinery.
+      '';
+    };
+
     systemDirectories = lib.mkOption {
       type = lib.types.listOf entryType;
       default = [ ];
@@ -105,7 +119,7 @@ in
 
       fileSystems."/persist".neededForBoot = true;
 
-      boot.initrd.systemd.services.rollback = {
+      boot.initrd.systemd.services.rollback = lib.mkIf (cfg.mode == "btrfs-rollback") {
         description = "Rollback btrfs root subvolume to a clean state";
         wantedBy = [ "initrd.target" ];
         after = [ "initrd-root-device.target" ];
