@@ -58,5 +58,18 @@
           ./hosts/ritsuko/configuration.nix
         ];
       };
+
+      nixosConfigurations.penpen = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.home-manager.nixosModules.default
+          inputs.preservation.nixosModules.default
+          inputs.disko.nixosModules.disko
+          ./hosts/penpen/configuration.nix
+        ];
+      };
+
+      packages.x86_64-linux.penpen-image =
+        inputs.self.nixosConfigurations.penpen.config.system.build.diskoImages;
     };
 }
