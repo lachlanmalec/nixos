@@ -6,14 +6,13 @@
     ./disko.nix
     ./users/lachlan.nix
 
-    ../../modules/boot.nix
-    ../../modules/nix.nix
-    ../../modules/core.nix
-    ../../modules/locales/australia-brisbane.nix
-    ../../modules/persistence.nix
-    ../../modules/ssh.nix
+    ../../modules/system/boot.nix
+    ../../modules/system/core.nix
+    ../../modules/system/persistence.nix
+    ../../modules/system/ssh.nix
+    ../../modules/system/home-manager.nix
 
-    ../../modules/home-manager.nix
+    ../../modules/locales/australia-brisbane.nix
   ];
 
   networking.hostName = "ritsuko";

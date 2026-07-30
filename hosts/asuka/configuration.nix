@@ -6,22 +6,21 @@
     ./disko.nix
     ./users/lachlan.nix
 
-    ../../modules/boot.nix
-    ../../modules/nix.nix
-    ../../modules/core.nix
+    ../../modules/system/boot.nix
+    ../../modules/system/core.nix
+    ../../modules/system/gpg.nix
+    ../../modules/system/persistence.nix
+    ../../modules/system/ssh.nix
+    ../../modules/system/home-manager.nix
+
     ../../modules/locales/australia-brisbane.nix
     ../../modules/firefox.nix
-    ../../modules/gpg.nix
-    ../../modules/persistence.nix
-    ../../modules/ssh.nix
     ../../modules/network-manager.nix
 
     ../../modules/hardware/audio.nix
     ../../modules/hardware/bluetooth.nix
     ../../modules/hardware/nvidia.nix
     ../../modules/hardware/logitech.nix
-
-    ../../modules/home-manager.nix
 
     # ../../modules/gnome.nix
     ../../modules/hyprland.nix

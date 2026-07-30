@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   environment.systemPackages = with pkgs; [
     tmux
     neovim
@@ -17,6 +23,7 @@
     }
   ];
   local.persistence.systemDirectories = [
+    "/etc/nixos"
     "/var/lib/systemd/timers"
     "/var/lib/nixos"
     "/var/log"

@@ -5,16 +5,15 @@
     ./wsl.nix
     ./users/lachlan.nix
 
-    ../../modules/nix.nix
-    ../../modules/core.nix
-    ../../modules/locales/australia-brisbane.nix
-    ../../modules/gpg.nix
+    ../../modules/system/core.nix
+    ../../modules/system/gpg.nix
     # imported for its local.persistence.* option declarations only; the
     # impermanence implementation stays disabled — WSL mounts the rootfs
     # itself, so there is no initrd in which to roll back a subvolume
-    ../../modules/persistence.nix
+    ../../modules/system/persistence.nix
+    ../../modules/system/home-manager.nix
 
-    ../../modules/home-manager.nix
+    ../../modules/locales/australia-brisbane.nix
   ];
 
   networking.hostName = "kaworu";
