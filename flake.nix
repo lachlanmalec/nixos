@@ -47,5 +47,16 @@
           ./hosts/kaworu/configuration.nix
         ];
       };
+
+      nixosConfigurations.ritsuko = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.home-manager.nixosModules.default
+          inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.preservation.nixosModules.default
+          inputs.disko.nixosModules.disko
+          ./hosts/ritsuko/configuration.nix
+        ];
+      };
     };
 }
