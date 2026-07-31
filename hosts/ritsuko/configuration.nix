@@ -4,6 +4,8 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./nginx.nix
+    ./forgejo.nix
     ./users/lachlan.nix
 
     ../../modules/system/boot.nix
