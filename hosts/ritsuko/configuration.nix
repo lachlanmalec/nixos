@@ -6,6 +6,7 @@
     ./disko.nix
     ./nginx.nix
     ./forgejo.nix
+    ./grafana.nix
     ./users/lachlan.nix
 
     ../../modules/system/boot.nix
