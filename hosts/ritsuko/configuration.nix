@@ -12,6 +12,7 @@
     ../../modules/system/boot.nix
     ../../modules/system/core.nix
     ../../modules/system/persistence.nix
+    ../../modules/system/secrets.nix
     ../../modules/system/ssh.nix
     ../../modules/system/home-manager.nix
 

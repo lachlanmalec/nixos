@@ -22,6 +22,11 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -34,6 +39,7 @@
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.preservation.nixosModules.default
           inputs.disko.nixosModules.disko
+          inputs.agenix.nixosModules.default
           ./hosts/asuka/configuration.nix
         ];
       };
@@ -44,6 +50,7 @@
           inputs.home-manager.nixosModules.default
           inputs.preservation.nixosModules.default
           inputs.nixos-wsl.nixosModules.default
+          inputs.agenix.nixosModules.default
           ./hosts/kaworu/configuration.nix
         ];
       };
@@ -55,21 +62,9 @@
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.preservation.nixosModules.default
           inputs.disko.nixosModules.disko
+          inputs.agenix.nixosModules.default
           ./hosts/ritsuko/configuration.nix
         ];
       };
-
-      nixosConfigurations.penpen = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          inputs.home-manager.nixosModules.default
-          inputs.preservation.nixosModules.default
-          inputs.disko.nixosModules.disko
-          ./hosts/penpen/configuration.nix
-        ];
-      };
-
-      packages.x86_64-linux.penpen-image =
-        inputs.self.nixosConfigurations.penpen.config.system.build.diskoImages;
     };
 }

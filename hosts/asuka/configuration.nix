@@ -10,6 +10,7 @@
     ../../modules/system/core.nix
     ../../modules/system/gpg.nix
     ../../modules/system/persistence.nix
+    ../../modules/system/secrets.nix
     ../../modules/system/ssh.nix
     ../../modules/system/home-manager.nix
 

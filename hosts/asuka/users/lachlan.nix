@@ -1,9 +1,11 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
+  age.secrets.lachlan-password.file = ../../../secrets/lachlan-password.age;
+
   users.users."lachlan" = {
     isNormalUser = true;
-    initialPassword = "password123";
+    hashedPasswordFile = config.age.secrets.lachlan-password.path;
     description = "Lachlan Malec";
     extraGroups = [
       "networkmanager"

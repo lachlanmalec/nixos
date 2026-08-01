@@ -11,6 +11,8 @@
     # impermanence implementation stays disabled — WSL mounts the rootfs
     # itself, so there is no initrd in which to roll back a subvolume
     ../../modules/system/persistence.nix
+    ../../modules/system/secrets.nix
+    ../../modules/system/ssh.nix
     ../../modules/system/home-manager.nix
 
     ../../modules/locales/australia-brisbane.nix

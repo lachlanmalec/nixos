@@ -1,6 +1,11 @@
-{ ... }:
+{ config, ... }:
 
 {
+  age.secrets.grafana-secret-key = {
+    file = ../../secrets/ritsuko-grafana-secret-key.age;
+    owner = "grafana";
+  };
+
   services.grafana = {
     enable = true;
     settings = {
@@ -10,8 +15,7 @@
         domain = "grafana.ritsuko.local";
         root_url = "http://grafana.ritsuko.local/";
       };
-      # required by the module; plaintext until age-based secrets land
-      security.secret_key = "changeme-until-age-secrets";
+      security.secret_key = "$__file{${config.age.secrets.grafana-secret-key.path}}";
     };
     provision = {
       enable = true;
