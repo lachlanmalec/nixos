@@ -34,4 +34,8 @@ in
   "kaworu-host-key.age".publicKeys = forHosts [ ];
   "ritsuko-host-key.age".publicKeys = forHosts [ ];
   "asuka-host-key.age".publicKeys = forHosts [ ];
+
+  # yescrypt hash of the penpen live ISO's root password — decrypted by
+  # scripts/build-penpen-iso.sh and baked into the image at build time
+  "penpen-root-password.age".publicKeys = forHosts [ ];
 }

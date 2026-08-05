@@ -16,6 +16,8 @@ updated with `nixos-rebuild --target-host`, driven by the scripts in
   - `asuka` — desktop (Hyprland, gaming, nvidia)
   - `kaworu` — WSL development machine
   - `ritsuko` — headless server (nginx, forgejo, grafana/prometheus/loki)
+  - `penpen` — stock minimal installer ISO with a preset root password;
+    built with `scripts/build-penpen-iso.sh`
 - `modules/` — shared modules
   - `system/` — base system: persistence (ephemeral root), secrets,
     ssh, boot (lanzaboote secure boot), core
@@ -23,7 +25,8 @@ updated with `nixos-rebuild --target-host`, driven by the scripts in
   - `hardware/`, `locales/` and desktop/app modules
 - `secrets/` — age-encrypted secrets, the recipient list
   (`recipients.nix`), and the agenix ruleset (`secrets.nix`)
-- `scripts/` — `provision.sh` (first install) and `deploy.sh` (rebuilds)
+- `scripts/` — `provision.sh` (first install), `deploy.sh` (rebuilds),
+  and `build-penpen-iso.sh` (installer ISO)
 
 ## Deployment and secret rotation
 

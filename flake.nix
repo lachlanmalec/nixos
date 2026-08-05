@@ -66,5 +66,19 @@
           ./hosts/ritsuko/configuration.nix
         ];
       };
+
+      # the stock minimal installer ISO plus a hostname and a preset root
+      # password; build with scripts/build-penpen-iso.sh (the password
+      # hash is injected impurely from secrets/)
+      nixosConfigurations.penpen = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+          ./hosts/penpen/configuration.nix
+        ];
+      };
+
+      packages.x86_64-linux.penpen-iso =
+        inputs.self.nixosConfigurations.penpen.config.system.build.isoImage;
     };
 }
