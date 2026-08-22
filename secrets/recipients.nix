@@ -13,11 +13,11 @@
   # lachlan's personal key (age-keygen); private half at
   # ~/.config/age/keys.age, passphrase-protected — raw key and passphrase
   # backed up on 1password
-  lachlan = "age1d4ckr3qw93hs04mppzfma7rgd04mac76ea2fy6ymkm7g58fy2v8s0w7pzh";
+  lachlan = "age1w7z9n7aahx9v8cxzkaem38ze3ah9vtq9mc4z63dc4e5ramnwwcdq7ksnpn";
 
   hosts = {
-    kaworu = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7lr2mEJovSkTh6Kx88Jg15kMLAgMYJ0L9Ni0lQWRtX";
-    ritsuko = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM5vizfxkjZRxKygGtFXhuRMRzQrbHUEkKckmvJUy24d";
-    asuka = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBEzJOwe3lfHsl2GGCcIIbCzzSuGEVq2CJxs4oLGJVv2";
+    kaworu = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINfSRbD/9VhCYcu8122grhjIxI9llm3Jbzb0PIdgxEW1";
+    ritsuko = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIPSTGeB9gtlzn0C+X6CbmyZ/Bkvt+jBA6Rw2bp3hJGH";
+    asuka = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA2QrhgzuvtCjjsnvfL8tfQPsgELtOARqeM/aQcm8IvF";
   };
 }
