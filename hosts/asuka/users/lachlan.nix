@@ -24,6 +24,7 @@
       ../../../modules/home/vesktop.nix
       ../../../modules/home/spotify.nix
       ../../../modules/home/google-chrome.nix
+      ../../../modules/home/brave-origin.nix
       ../../../modules/home/slack.nix
       ../../../modules/home/shell.nix
       ../../../modules/home/tmux.nix
