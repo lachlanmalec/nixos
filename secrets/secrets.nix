@@ -18,24 +18,24 @@ let
 in
 {
   # yescrypt hash of lachlan's login password (mkpasswd -m yescrypt)
-  "lachlan-password.age".publicKeys = forHosts [
+  "user-passwords/lachlan-password.age".publicKeys = forHosts [
     "kaworu"
     "ritsuko"
     "asuka"
   ];
 
   # grafana server-side signing/encryption key (security.secret_key)
-  "ritsuko-grafana-secret-key.age".publicKeys = forHosts [ "ritsuko" ];
+  "service-secrets/ritsuko-grafana-secret-key.age".publicKeys = forHosts [ "ritsuko" ];
 
   # centrally-minted SSH host keys — readable only by lachlan; the deploy
   # tooling decrypts and pushes them onto the machines (provision.sh at
   # install, deploy.sh on every rebuild), and they double as identity
   # backups if a /persist is ever lost
-  "kaworu-host-key.age".publicKeys = forHosts [ ];
-  "ritsuko-host-key.age".publicKeys = forHosts [ ];
-  "asuka-host-key.age".publicKeys = forHosts [ ];
+  "host-keys/kaworu-host-key.age".publicKeys = forHosts [ ];
+  "host-keys/ritsuko-host-key.age".publicKeys = forHosts [ ];
+  "host-keys/asuka-host-key.age".publicKeys = forHosts [ ];
 
   # yescrypt hash of the penpen live ISO's root password — decrypted by
   # scripts/build-penpen-iso.sh and baked into the image at build time
-  "penpen-root-password.age".publicKeys = forHosts [ ];
+  "user-passwords/penpen-root-password.age".publicKeys = forHosts [ ];
 }

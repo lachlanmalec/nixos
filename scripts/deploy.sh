@@ -4,10 +4,11 @@
 #
 #   scripts/deploy.sh <host> [ssh-target]     (ssh-target defaults to lachlan@<host>)
 #
-# If the host has a centrally-managed key (secrets/<host>-host-key.age), it
-# is synced before the rebuild — so rotating a host key is just: rotate in
-# secrets/, deploy. sshd is restarted, and the deployer's known_hosts entry
-# re-pinned, only when the key actually changed.
+# If the host has a centrally-managed key
+# (secrets/host-keys/<host>-host-key.age), it is synced before the rebuild
+# — so rotating a host key is just: rotate in secrets/, deploy. sshd is
+# restarted, and the deployer's known_hosts entry re-pinned, only when the
+# key actually changed.
 #
 # Deploying the machine you are running on rebuilds locally over sudo.
 set -euo pipefail
@@ -16,7 +17,7 @@ repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 identity=${AGE_IDENTITY:-$HOME/.config/age/keys.age}
 host=${1:?usage: deploy.sh <host> [ssh-target]}
 
-blob="$repo/secrets/$host-host-key.age"
+blob="$repo/secrets/host-keys/$host-host-key.age"
 
 nixcmd() {
   nix --extra-experimental-features 'nix-command flakes' "$@"

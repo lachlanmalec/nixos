@@ -45,7 +45,7 @@ mkdir -p \
 chmod 700 "$extra/persist/home/lachlan/.config/nixos"
 
 age -d -i "$identity" -o "$extra/persist/etc/ssh/ssh_host_ed25519_key" \
-  "$repo/secrets/$host-host-key.age"
+  "$repo/secrets/host-keys/$host-host-key.age"
 chmod 600 "$extra/persist/etc/ssh/ssh_host_ed25519_key"
 
 # regenerated hardware config must be git-tracked for the flake build to

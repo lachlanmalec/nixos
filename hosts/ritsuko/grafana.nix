@@ -2,7 +2,7 @@
 
 {
   age.secrets.grafana-secret-key = {
-    file = ../../secrets/ritsuko-grafana-secret-key.age;
+    file = ../../secrets/service-secrets/ritsuko-grafana-secret-key.age;
     owner = "grafana";
   };
 

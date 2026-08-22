@@ -23,8 +23,9 @@ updated with `nixos-rebuild --target-host`, driven by the scripts in
     ssh, boot (lanzaboote secure boot), core
   - `home/` — per-application home-manager modules
   - `hardware/`, `locales/` and desktop/app modules
-- `secrets/` — age-encrypted secrets, the recipient list
-  (`recipients.nix`), and the agenix ruleset (`secrets.nix`)
+- `secrets/` — age-encrypted secrets, grouped into `host-keys/`,
+  `user-passwords/` and `service-secrets/`, plus the recipient list
+  (`recipients.nix`) and the agenix ruleset (`secrets.nix`)
 - `scripts/` — `provision.sh` (first install), `deploy.sh` (rebuilds),
   and `build-penpen-iso.sh` (installer ISO)
 
@@ -55,10 +56,11 @@ Deployments are push-style:
   nixos-anywhere from a stock NixOS installer ISO. Formats with disko and
   seeds `/persist` before the first boot: preservation's bind-mount
   sources, lachlan's home, and the host's SSH key. The host key is the
-  machine's age identity; reusing the committed `<host>-host-key.age`
-  means a reinstall keeps the machine's SSH identity and needs no rekeying.
+  machine's age identity; reusing the committed
+  `host-keys/<host>-host-key.age` means a reinstall keeps the machine's SSH
+  identity and needs no rekeying.
 - `scripts/deploy.sh <host>` — every subsequent rebuild. If the host has a
-  managed key (`secrets/<host>-host-key.age`), it is synced first
+  managed key (`secrets/host-keys/<host>-host-key.age`), it is synced first
   (restarting sshd only if it changed), then `nixos-rebuild switch
   --target-host` runs. Deploying the machine you are on rebuilds locally.
 
@@ -73,7 +75,7 @@ the `/etc/ssh` view doesn't exist yet at boot).
 For a compromised or aging secret (password, grafana key, …):
 
 ```sh
-agenix -e lachlan-password.age        # opens $EDITOR on the plaintext
+agenix -e user-passwords/lachlan-password.age   # opens $EDITOR on the plaintext
 # for the password specifically, paste the output of:
 mkpasswd -m yescrypt
 ```
@@ -104,7 +106,7 @@ keys. Rotate it if it may have leaked, or on general hygiene.
 4. Verify with the new key before destroying anything:
 
    ```sh
-   age -d -i /tmp/keys-new.txt lachlan-password.age > /dev/null && echo ok
+   age -d -i /tmp/keys-new.txt user-passwords/lachlan-password.age > /dev/null && echo ok
    ```
 
 5. Passphrase-encrypt it into place, verify the result unlocks, and only
@@ -130,7 +132,7 @@ plaintexts.
    ```sh
    ssh-keygen -t ed25519 -N "" -C root@ritsuko -f /tmp/hk
    # paste /tmp/hk.pub (drop the comment) into recipients.nix hosts.<host>
-   EDITOR="cp /tmp/hk" agenix -e ritsuko-host-key.age
+   EDITOR="cp /tmp/hk" agenix -e host-keys/ritsuko-host-key.age
    agenix -r
    shred -u /tmp/hk /tmp/hk.pub
    ```

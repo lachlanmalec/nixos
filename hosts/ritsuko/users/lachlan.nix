@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  age.secrets.lachlan-password.file = ../../../secrets/lachlan-password.age;
+  age.secrets.lachlan-password.file = ../../../secrets/user-passwords/lachlan-password.age;
 
   users.users."lachlan" = {
     isNormalUser = true;

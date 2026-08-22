@@ -2,8 +2,9 @@
 
 let
   # injected by scripts/build-penpen-iso.sh (nix build --impure); the hash
-  # lives age-encrypted in secrets/penpen-root-password.age. It is baked
-  # into the ISO — the image itself is as sensitive as the password.
+  # lives age-encrypted in secrets/user-passwords/penpen-root-password.age.
+  # It is baked into the ISO — the image itself is as sensitive as the
+  # password.
   rootHash = builtins.getEnv "PENPEN_ROOT_HASH";
 in
 {
@@ -18,8 +19,8 @@ in
       message = ''
         PENPEN_ROOT_HASH is not set. Build this ISO with
         scripts/build-penpen-iso.sh — it decrypts the root password hash
-        from secrets/penpen-root-password.age and injects it into the
-        (impure) build.
+        from secrets/user-passwords/penpen-root-password.age and injects it
+        into the (impure) build.
       '';
     }
   ];
