@@ -413,6 +413,7 @@
         # cursor theme applied across GTK and the Wayland session (sets
         # XCURSOR_THEME / XCURSOR_SIZE, propagated to UWSM via uwsm/env)
         home.pointerCursor = {
+          enable = true;
           gtk.enable = true;
           package = pkgs.adwaita-icon-theme;
           name = "Adwaita";
