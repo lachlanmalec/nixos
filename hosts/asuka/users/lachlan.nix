@@ -15,6 +15,7 @@
   home-manager.users."lachlan" = {
     imports = [
       ../../../modules/home/claude-code.nix
+      ../../../modules/home/git.nix
       ../../../modules/home/helix.nix
       ../../../modules/home/development-csharp.nix
       ../../../modules/home/development-nix.nix
@@ -32,14 +33,7 @@
     home.packages = with pkgs; [
       # General Dev Tools
       git
-      gh
     ];
-
-    programs.git = {
-      enable = true;
-      settings.user.name = "Lachlan Malec";
-      settings.user.email = "lachlan@lachlanmalec.dev";
-    };
 
     home.stateVersion = "26.05";
   };
